@@ -16,7 +16,7 @@ export default function ajax(url,data={},type='GET') {
       })
       //处理最后的&符号
       if (dataStr !== '') {
-        dataStr =  dataStr.subString(0,dataStr.length-1);
+        dataStr =  dataStr.substring(0,dataStr.length-1);
         //添加到url上
         url += "?" + dataStr;
       }
