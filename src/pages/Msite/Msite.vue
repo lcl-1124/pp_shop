@@ -84,7 +84,7 @@
     },
     watch: {
       //界面更新就立即创建Swiper对象
-      categorys (value) {//categorys数组中有数据了  在异步更新界面之前执行
+      categorys () {//categorys数组中有数据了  在异步更新界面之前执行
         this.$nextTick(() => {//将回调延迟到下次 DOM 更新循环之后执行
           let mySwiper = new Swiper('.swiper-container', {
             loop: true,

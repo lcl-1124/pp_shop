@@ -19,12 +19,12 @@ export const reqSearchShops = (geohash,keyword) => ajax(BASE_URL + '/search_shop
 // 5、获取一次性验证码
 export const reqCaptcha = () => ajax(BASE_URL + '/captcha')
 // 6、用户名密码登陆
-export const sendLoginPwd = (name,pwd,captcha) => ajax(BASE_URL + '/login_pwd',{name,pwd,captcha},'POST')
+export const sendPwdLogin = ({name,pwd,captcha}) => ajax(BASE_URL + '/login_pwd',{name,pwd,captcha},'POST')
 // 7、发送短信验证码
-export const reqSendcode = (phone) => ajax(BASE_URL + '/sendcode',{phone})
+export const sendcode = (phone) => ajax(BASE_URL + '/sendcode',{phone})
 // 8、手机号验证码登陆
-export const sendLoginSms = (phone,code) => ajax(BASE_URL + '/login_sms',{phone,code},'POST')
+export const sendSmsLogin = (phone,code) => ajax(BASE_URL + '/login_sms',{phone,code},'POST')
 // 9、根据会话获取用户信息
-export const reqUserinfo = () => ajax(BASE_URL + '/userinfo')
+export const reqUserInfo = () => ajax(BASE_URL + '/userinfo')
 // 10、用户登出
-export const reqLogout =() => ajax(BASE_URL + '/logout')
+export const sendLogout =() => ajax(BASE_URL + '/logout')
