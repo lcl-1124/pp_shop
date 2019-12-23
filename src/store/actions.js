@@ -4,12 +4,16 @@
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
-  RECEIVE_SHOPS
+  RECEIVE_SHOPS,
+  RECEIVE_USER_INFO,
+  RESET_USER_INFO
 } from './mutation-types'
 import {
   reqAddress,
   reqFoodTypes,
-  reqShops
+  reqShops,
+  reqUserInfo,
+  sendLogout
 } from '../api/index'
 
 export default {
@@ -42,6 +46,26 @@ export default {
     if (result.code === 0) {//获取成功
       const shops = result.data;
       commit(RECEIVE_SHOPS,{shops})
+    }
+  },
+  //同步保存用户登录信息
+  saveUserInfo ({commit},userInfo) {
+    commit(RECEIVE_USER_INFO,{userInfo})
+  },
+  //异步获取用户信息
+  async getUserinfo ({commit}) {
+    const result = await reqUserInfo();
+    if (result.code === 0) {
+      const userInfo = result.data;
+      commit(RECEIVE_USER_INFO,{userInfo})     
+    }
+  },
+  //异步退出登录
+  async logoutSend ({commit}) {
+    const result = await sendLogout();
+    if (result.code === 0) {
+      //提交mutation,重置userInfo状态
+      commit(RESET_USER_INFO)
     }
   }
 }

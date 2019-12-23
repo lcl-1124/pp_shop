@@ -39,7 +39,7 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="breakCaptcha">
+                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="breakCaptcha" ref="captcha">
               </section>
             </section>
           </div>
@@ -73,6 +73,10 @@
         alertShow: false,   //是否显示警告框
       }
     },
+    mounted () {
+      //刷新图片验证码
+      this.breakCaptcha()
+    },
     computed: {
       isRightGetPhone () {//符合返回true，不符合返回false
         const {phone} = this;
@@ -83,7 +87,7 @@
       //异步获取短信验证码
       async getSendcode () {
         if (!this.computeTime) {
-          //进行前台表单验证
+          //进行倒计时
           this.computeTime = 30;
           this.intervalId = setInterval(() => {
             this.computeTime--
@@ -116,34 +120,58 @@
         this.alertText = '';
       },
       //异步登录
-      login () {
+      async login () {
         /*前台表单验证*/
-        const {isRightGetPhone,code,name,pwd,captcha} = this;
+        const {isRightGetPhone,phone,code,name,pwd,captcha} = this;
+        let result;
         if (this.isSMSLogin) {//手机短信验证
           if (!isRightGetPhone) {
             //请正确输入手机号
             this.showAlert('请正确输入手机号')
+            return
           } else if (!/^\d{6}$/.test(code)) {
             //请正确输入验证码
             this.showAlert('请正确输入验证码')
+            return
           }
+          //发送请求短信验证码登录
+          result = await sendSmsLogin(phone,code)
         } else {//用户名密码登录
           if (!name) {
             //用户名必须指定
             this.showAlert('用户名必须指定')
+            return
           } else if (!pwd) {
             //密码必须指定
             this.showAlert('密码必须指定')
+            return
           } else if (!captcha) {
             //请输入图片验证码
             this.showAlert('请输入图片验证码')
+            return
           }
+          //发送请求账户密码图片验证码登录
+          result = await sendPwdLogin({name,pwd,captcha})
+        }
+        if (result.code === 0) {
+          const user = result.data;
+          console.log(user)
+          //将用户信息保存到vuex中
+          this.$store.dispatch('saveUserInfo',user)
+          //跳转页面
+          this.$router.replace('/Profile')
+        } else {
+          const error = result.msg;
+          //弹出警告框
+          this.showAlert(error)
+          //刷新图片验证码
+          this.breakCaptcha()
         }
       },
       //刷新图片验证码
-      breakCaptcha (event) {
+      breakCaptcha () {
         //只有src不同时才会刷新，添加一个query请求参数
-        event.target.src = 'http://localhost:4000/captcha?time=' + Date.now();
+        this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now();
       }
     },
     components: {
