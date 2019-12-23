@@ -2,7 +2,7 @@
   <section class="loginContainer">
     <div class="loginInner">
       <div class="login_header">
-        <h2 class="login_logo">FoodShop</h2>
+        <h2 class="login_logo">PiPiShop</h2>
         <div class="login_header_title">
           <a href="javascript:;" :class="{on: isSMSLogin}" @click="isSMSLogin = true">短信登录</a>
           <a href="javascript:;" :class="{on: !isSMSLogin}" @click="isSMSLogin = false">密码登录</a>
@@ -20,7 +20,7 @@
               <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
             </section>
             <section class="login_hint">
-              温馨提示：未注册FoodShop帐号的手机号，登录时将自动注册，且代表已同意
+              温馨提示：未注册PiPiShop帐号的手机号，登录时将自动注册，且代表已同意
               <a href="javascript:;">《用户服务协议》</a>
             </section>
           </div>
