@@ -5,11 +5,14 @@
 
 import ajax from './ajax'
 
+/*
+使用后启用代理服务器解决跨域
+*/
 // const BASE_URL = 'http://localhost:4000'
-const BASE_URL = '/api'
+const BASE_URL = '/api';
 
 // 1、根据经纬度获取位置详情
-export const reqAddress = (geohash) => ajax(`${BASE_URL}/position/${geohash}`);
+export const reqAddress = (geohash) => ajax(`${BASE_URL}/position/${geohash}`)
 // 2、获取食品分类列表
 export const reqFoodTypes = () => ajax(BASE_URL + '/index_category')
 // 3、根据经纬度获取商铺列表>
@@ -27,4 +30,11 @@ export const sendSmsLogin = (phone,code) => ajax(BASE_URL + '/login_sms',{phone,
 // 9、根据会话获取用户信息
 export const reqUserInfo = () => ajax(BASE_URL + '/userinfo')
 // 10、用户登出
-export const sendLogout =() => ajax(BASE_URL + '/logout')
+export const sendLogout = () => ajax(BASE_URL + '/logout')
+
+//mock、获取点餐列表
+export const reqShopGoods = () => ajax('/goods')
+//mock、获取评价信息
+export const reqRatings = () => ajax('/ratings')
+//mock、获取商铺详情
+export const reqShopInfo = () => ajax('/info')

@@ -6,14 +6,20 @@ import {
   RECEIVE_CATEGORYS,
   RECEIVE_SHOPS,
   RECEIVE_USER_INFO,
-  RESET_USER_INFO
+  RESET_USER_INFO,
+  RECEIVE_SHOP_GOODS,
+  RECEIVE_RATINGS,
+  RECEIVE_SHOP_INFO
 } from './mutation-types'
 import {
   reqAddress,
   reqFoodTypes,
   reqShops,
   reqUserInfo,
-  sendLogout
+  sendLogout,
+  reqShopGoods,
+  reqRatings,
+  reqShopInfo
 } from '../api/index'
 
 export default {
@@ -66,6 +72,32 @@ export default {
     if (result.code === 0) {
       //提交mutation,重置userInfo状态
       commit(RESET_USER_INFO)
+    }
+  },
+
+  /*mock数据*/
+  //异步获取点餐食品列表
+  async getShopGoods ({commit}) {
+    const result = await reqShopGoods();
+    if (result.code === 0) {
+      const goods = result.data;
+      commit(RECEIVE_SHOP_GOODS,{goods})
+    }
+  },
+  //异步获取评价信息
+  async getRatings ({commit}) {
+    const result = await reqRatings();
+    if (result.code === 0) {
+      const ratings = result.data;
+      commit(RECEIVE_RATINGS,{ratings})
+    }
+  },
+  //异步获取商铺信息
+  async getShopInfo ({commit}) {
+    const result = await reqShopInfo();
+    if (result.code === 0) {
+      const shopInfo = result.data;
+      commit(RECEIVE_SHOP_INFO,{shopInfo})
     }
   }
 }

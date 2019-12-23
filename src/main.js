@@ -3,6 +3,7 @@
 */
 import Vue from 'vue'
 import {Button,MessageBox } from 'mint-ui'
+import './mock/mockServer'
 
 import App from './App.vue'
 import router from './router/index'
