@@ -1,6 +1,8 @@
 /*
 包含多个直接更新state状态的方法的对象模块
 */
+import Vue from "vue";
+
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
@@ -9,7 +11,9 @@ import {
   RESET_USER_INFO,
   RECEIVE_SHOP_GOODS,
   RECEIVE_RATINGS,
-  RECEIVE_SHOP_INFO
+  RECEIVE_SHOP_INFO,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT
 } from './mutation-types'
 
 export default {
@@ -26,7 +30,7 @@ export default {
     state.userInfo = userInfo;
   },
   [RESET_USER_INFO] (state) {
-    //重置userInfo状态
+    // 重置userInfo状态
     state.userInfo = {};
   },
   // mock数据
@@ -38,5 +42,21 @@ export default {
   },
   [RECEIVE_SHOP_INFO] (state,{shopInfo}) {
     state.shopInfo = shopInfo;
+  },
+  [INCREMENT_FOOD_COUNT] (state,{food}) {
+    // 判断food是否有count属性
+    if (!food.count) { // 没有
+      // food.count = 1
+      // 更新界面
+      Vue.set(food,'count',1)
+    } else {  //有
+      food.count++
+    }
+  },
+  [DECREMENT_FOOD_COUNT] (state,{food}) {
+    //判断count是否为零，为零则不去减少
+    if (food.count) { // 不为零
+      food.count--
+    }
   },
 }
