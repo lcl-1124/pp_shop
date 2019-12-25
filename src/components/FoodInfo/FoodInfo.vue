@@ -1,31 +1,37 @@
 <template>
-  <div class="food" v-if="foodShow" ref="food"> 
-    <div class="food-content" v-if="food.image"> 
-      <div class="image-header"> 
-        <img :src="food.image"> 
-        <p class="foodpanel-desc">{{food.info}}</p> 
-        <div class="back" @click="showFood"> 
-          <i class="iconfont iconarrow-right"></i> 
+  <transition name="fade">
+    <div class="food" v-if="foodShow" ref="food">
+      <div class="food-content" v-if="food.image"> 
+        <div class="image-header"> 
+          <img :src="food.image"> 
+          <p class="foodpanel-desc">{{food.info}}</p> 
+          <div class="back" @click="showFood"> 
+            <i class="iconfont iconarrow-right"></i> 
+          </div> 
         </div> 
-      </div> 
-      <div class="content"> 
-        <h1 class="title">{{food.name}}</h1> 
-        <div class="detail"> 
-          <span class="sell-count">月售 {{food.sellCount}} 份</span> 
-          <span class="rating">好评率 {{food.rating}}%</span> 
+        <div class="content"> 
+          <h1 class="title">{{food.name}}</h1> 
+          <div class="detail"> 
+            <span class="sell-count">月售 {{food.sellCount}} 份</span> 
+            <span class="rating">好评率 {{food.rating}}%</span> 
+          </div> 
+          <div class="price"> 
+            <span class="now">￥{{food.price}}</span> 
+            <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span> 
+          </div> 
+          <div class="cartcontrol-wrapper"> 
+            <cartcontrol :food="food" />
+          </div> 
         </div> 
-        <div class="price"> 
-          <span class="now">￥{{food.price}}</span> 
-          <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span> 
-        </div> 
-        <div class="cartcontrol-wrapper"> cartcontrol 组件 </div> 
-      </div> 
-    </div> 
-    <div class="food-cover" @click="showFood"></div> 
-  </div>
+      </div>
+      <div class="food-cover" @click="showFood"></div>
+    </div>
+  </transition>
 </template>
 
 <script>
+  import cartcontrol from '../CartControl/CartControl' 
+
   export default {
     data () {
       return {
@@ -40,6 +46,9 @@
         //更新data状态
         this.foodShow = !this.foodShow;
       }
+    },
+    components: {
+      cartcontrol
     }
   }
 </script>
@@ -96,7 +105,7 @@
             display: block
             padding: 10px
             font-size: 20px
-            color: #fff
+            color: #ccc
       .content
         position: relative
         padding: 18px
@@ -131,24 +140,6 @@
           position: absolute
           right: 12px
           bottom: 12px
-        .buy
-          position: absolute
-          right: 18px
-          bottom: 18px
-          z-index: 10
-          height: 24px
-          line-height: 24px
-          padding: 0 12px
-          box-sizing: border-box
-          border-radius: 12px
-          font-size: 10px
-          color: #fff
-          background: rgb(0, 160, 220)
-          &.fade-transition
-            transition: all 0.2s
-            opacity: 1
-          &.fade-enter, &.fade-leave
-            opacity: 0
     .food-cover
       position absolute
       top 0
@@ -157,5 +148,4 @@
       left 0
       z-index 55
       background-color rgba(0, 0, 0, 0.5)
-
 </style>
