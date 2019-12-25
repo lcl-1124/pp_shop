@@ -13,3 +13,4 @@ export const RECEIVE_RATINGS = 'receive_goods'  // 获取评价信息
 export const RECEIVE_SHOP_INFO = 'receive_shop_info'  // 获取商铺信息
 export const INCREMENT_FOOD_COUNT = 'increment_food_count' // 添加食品个数
 export const DECREMENT_FOOD_COUNT = 'decrement_food_count' // 减少食品个数
+export const CLEAR_CART_FOODS = 'clear_cart_foods' // 清空购物车

@@ -11,7 +11,7 @@
 <script>
   export default {
     props: {
-      food: Object
+      food: Object,
     },
     methods: {
       updateFoodCount (isAdd) {  // 更新个数

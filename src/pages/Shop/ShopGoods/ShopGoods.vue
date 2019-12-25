@@ -43,6 +43,7 @@
         </ul>
       </div>
     </div>
+    <ShopCart />
     <FoodInfo :food="food" ref="food"/>
   </div>
 </template>
@@ -53,6 +54,7 @@
 
   import CartControl from '../../../components/CartControl/CartControl'
   import FoodInfo from '../../../components/FoodInfo/FoodInfo'
+  import ShopCart from '../../../components/ShopCart/ShopCart'
 
   export default {
     data () {
@@ -137,7 +139,8 @@
     },
     components: {
       CartControl,
-      FoodInfo
+      FoodInfo,
+      ShopCart
     },
   }
 </script>

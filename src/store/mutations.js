@@ -13,7 +13,8 @@ import {
   RECEIVE_RATINGS,
   RECEIVE_SHOP_INFO,
   INCREMENT_FOOD_COUNT,
-  DECREMENT_FOOD_COUNT
+  DECREMENT_FOOD_COUNT,
+  CLEAR_CART_FOODS
 } from './mutation-types'
 
 export default {
@@ -46,9 +47,11 @@ export default {
   [INCREMENT_FOOD_COUNT] (state,{food}) {
     // 判断food是否有count属性
     if (!food.count) { // 没有
-      // food.count = 1
+      // food.count = 1 // 新增属性(没有数据绑定)
       // 更新界面
-      Vue.set(food,'count',1)
+      Vue.set(food,'count',1) // 让新增属性也有数据绑定
+      //将food添加到cartFoods中
+      state.cartFoods.push(food)
     } else {  //有
       food.count++
     }
@@ -57,6 +60,15 @@ export default {
     //判断count是否为零，为零则不去减少
     if (food.count) { // 不为零
       food.count--
+      if (food.count === 0) {
+        state.cartFoods.splice(state.cartFoods.indexOf(food),1)
+      }
     }
   },
+  [CLEAR_CART_FOODS] (state) {
+    //重置food中的count
+    state.cartFoods.forEach(food => food.count = 0)
+    //清空购物车
+    state.cartFoods = [];
+  }
 }
