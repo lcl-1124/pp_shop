@@ -92,11 +92,11 @@
           this.cartListShow = !this.cartListShow;
         }
         //开启滚动
-          /*
-          BScroll只能创建一个(单例对象)
-            在创建之前先判断是否已经有BScroll
-              没有则创建他，有则保存他
-          */
+        /*
+        BScroll只能创建一个(单例对象)
+          在创建之前先判断是否已经有BScroll
+            没有则创建他，有则保存他
+        */
         if (this.cartListShow) {
           this.$nextTick(() => {
             /*
@@ -106,8 +106,7 @@
             */
             if (!this.scroll) { // 没有，创建一个
               this.scroll = new BScroll('.list-content',{
-                click: true,
-                probeType: 1
+                click: true
               })
             } else {  // 有，通知BScroll
               this.scroll.refresh()
@@ -118,8 +117,7 @@
                 也不用考虑在更新数据界面后要去调用refresh()刷新BScroll实例对象
             */
             // new BScroll('.list-content',{
-            //   click: true,
-            //   probeType: 1
+            //   click: true
             // })
           })
         }

@@ -3,7 +3,7 @@
     <div class="food" v-if="foodShow" ref="food">
       <div class="food-content" v-if="food.image"> 
         <div class="image-header"> 
-          <img :src="food.image"> 
+          <img v-lazy="food.image"> 
           <p class="foodpanel-desc">{{food.info}}</p> 
           <div class="back" @click="showFood"> 
             <i class="iconfont iconarrow-right"></i> 

@@ -27,27 +27,27 @@
       <div class="split"></div>
       <div class="ratingselect">
         <div class="rating-type border-1px"> 
-          <span class="block positive active"> 
+          <span class="block positive" @click="setActiveClass(2)" :class="{active: activeClass === 2}"> 
             全部
             <span class="count">{{shopInfo.ratingCount}}</span>
           </span> 
-          <span class="block positive"> 
+          <span class="block positive" @click="setActiveClass(0)" :class="{active: activeClass === 0}"> 
             满意
             <span class="count">{{godReview}}</span> 
           </span> 
-          <span class="block negative">
+          <span class="block negative" @click="setActiveClass(1)" :class="{active: activeClass === 1}">
             不满意
-            <span class="count">{{badReview}}</span> 
+            <span class="count">{{shopInfo.ratingCount - godReview}}</span> 
           </span> 
         </div>
-        <div class="switch" :class="{on: haveContent}" @click="showHaveCont"> 
+        <div class="switch" :class="{on: haveContent}" @click="toggleHaveCont"> 
           <span class="iconfont iconduigou"></span> 
           <span class="text">只看有内容的评价</span>
         </div>
       </div>
       <div class="rating-wrapper">
         <ul>
-          <li class="rating-item" v-for="(rating,index) in ratingArr" :key="index">
+          <li class="rating-item" v-for="(rating,index) in filterRatings" :key="index">
             <div class="avatar"> 
               <img width="28" height="28"
                 :src="rating.avatar"> </div>
@@ -62,7 +62,7 @@
                 <span class="iconfont icontuijian"></span> 
                 <span class="item" v-for="(item,index) in rating.recommend" :key="index">{{item}}</span> 
               </div>
-              <div class="time">{{_rateTime(rating.rateTime)}}</div>
+              <div class="time">{{rating.rateTime | dateFormat}}</div>
             </div>
           </li>
         </ul>
@@ -72,7 +72,8 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+  import {mapState,mapGetters} from 'vuex'
+  import BScroll from 'better-scroll'
 
   import Star from '../../../components/Star/Star'
 
@@ -80,44 +81,48 @@
     data () {
       return {
         haveContent: false,  // 是否有内容
-        ratingArr: [],      //指定评价的数组
-        activeClass: {}     
+        activeClass: 2    // 指定class，0、满意，1、不满意，2、全部
       }
     },
     mounted () {
       this.$store.dispatch('getRatings',() => {
-        this.ratingArr = this.$store.state.ratings;
+        //设置滚动
+        this.$nextTick(() => {
+          this.scroll = new BScroll(this.$refs.ratings,{
+            click: true
+          })
+        })
       })
     },
     computed: {
       ...mapState(['shopInfo','ratings']),
-      godReview () {
-        const {ratings} = this;
-        return ratings.reduce((count,rating) => {
-          if (rating.rateType === 0) {
-            count++
-          }
-          return count
-        },0)
-      },
-      badReview () {
-        const {shopInfo,ratings} = this;
-        return shopInfo.ratingCount - this.godReview
+      ...mapGetters(['godReview']),
+      filterRatings () {
+        const {ratings,haveContent,activeClass} = this;
+        //过滤返回一个新数组
+        return ratings.filter(rating => {
+          const {rateType,text} = rating;
+          /*
+          两种条件
+            1.满意/不满意/全部
+              activeClass:0/1/2
+              rateType:0/1
+              activeClass === 2 || activeClass === rateType
+            2.是否只显示有内容的评价
+              haveContent:true/false
+              text: 有内容/无内容
+              !haveContent ||　text.length > 0
+          */
+          return (activeClass === 2 || activeClass === rateType) && (!haveContent ||　text.length > 0)
+        })
       }
     },
     methods: {
-      _rateTime (time) {
-        const rateTime = new Date(time);
-        return rateTime.getFullYear() + '-' + (rateTime.getMonth() + 1) + '-' + rateTime.getDate() + ' ' + rateTime.getHours() + ':' + rateTime.getMinutes() + ':' + rateTime.getSeconds();
-      },
-      showHaveCont () {
+      toggleHaveCont () {
         this.haveContent = !this.haveContent;
-        const {ratings} = this;
-        if (this.haveContent) {
-          this.ratingArr = ratings.filter(rating => rating.text.length > 0);
-        } else {
-          this.ratingArr = ratings;
-        }
+      },
+      setActiveClass (num) {
+        this.activeClass = num;
       }
     },
     components: {

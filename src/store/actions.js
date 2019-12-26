@@ -12,7 +12,8 @@ import {
   RECEIVE_SHOP_INFO,
   INCREMENT_FOOD_COUNT,
   DECREMENT_FOOD_COUNT,
-  CLEAR_CART_FOODS
+  CLEAR_CART_FOODS,
+  SEARCH_SHOP_LIST
 } from './mutation-types'
 import {
   reqAddress,
@@ -22,7 +23,8 @@ import {
   sendLogout,
   reqShopGoods,
   reqRatings,
-  reqShopInfo
+  reqShopInfo,
+  reqSearchShops
 } from '../api/index'
 
 export default {
@@ -77,6 +79,15 @@ export default {
       commit(RESET_USER_INFO)
     }
   },
+  // 异步搜索商铺列表
+  async searchShops ({commit,state},keyword) {
+    const geohash = state.latitude + "," + state.longitude;
+    const result = await reqSearchShops(geohash,keyword);
+    if (result.code === 0) {
+      const searchShops = result.data;
+      commit(SEARCH_SHOP_LIST,{searchShops})
+    }
+  },
 
   /*mock数据*/
   //异步获取点餐食品列表
@@ -96,7 +107,7 @@ export default {
       const ratings = result.data;
       commit(RECEIVE_RATINGS,{ratings})
     }
-    callback()
+    callback &&　callback()
   },
   //异步获取商铺信息
   async getShopInfo ({commit}) {

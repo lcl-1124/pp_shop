@@ -14,7 +14,8 @@ import {
   RECEIVE_SHOP_INFO,
   INCREMENT_FOOD_COUNT,
   DECREMENT_FOOD_COUNT,
-  CLEAR_CART_FOODS
+  CLEAR_CART_FOODS,
+  SEARCH_SHOP_LIST
 } from './mutation-types'
 
 export default {
@@ -34,6 +35,10 @@ export default {
     // 重置userInfo状态
     state.userInfo = {};
   },
+  [SEARCH_SHOP_LIST] (state,{searchShops}) {
+    state.searchShops = searchShops;
+  },
+
   // mock数据
   [RECEIVE_SHOP_GOODS] (state,{goods}) {
     state.goods = goods;
