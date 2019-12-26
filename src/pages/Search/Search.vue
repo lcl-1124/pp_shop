@@ -91,10 +91,10 @@
         &.search_submit
           float right
           width 18%
-          border 4px solid #02a774
+          border 4px solid #358FCB
           font-size 16px
           color #fff
-          background-color #02a774
+          background-color #358FCB
 
     .list
       .list_container
