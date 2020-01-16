@@ -64,6 +64,7 @@
         //定义初始化外数组
         const arr = [];
         /*
+        // 方案一
         //定义初始化内数组
         let smallArr = [];
         //遍历数据
@@ -77,6 +78,8 @@
           }
         })
         */
+        /*
+        方法二
         let num = categorys.length%8;
         for (let i = 0; i < (categorys.length/8-num); i++) {
           arr[i] = categorys.slice(i*8,i*8+8)
@@ -84,6 +87,20 @@
         if (num) {//余数不为零
           arr.push(categorys.slice(-1,num-2))
         }
+        */
+
+        //定义初始化内数组
+        let smallArr = [];
+        //遍历数据
+        categorys.forEach((category,index) => {
+          // debugger
+          smallArr.push(category)
+          if (smallArr.length === 8) {
+            arr.push([...smallArr])
+            smallArr = [];
+          }
+        })
+        
         return arr
       }
     },
