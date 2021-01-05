@@ -12,7 +12,7 @@
     "client": "serve dist"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "better-scroll": "^2.0.0-beta.2",
     "date-fns": "^2.8.1",
     "mint-ui": "^2.2.13",
